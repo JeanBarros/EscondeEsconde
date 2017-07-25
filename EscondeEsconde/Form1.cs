@@ -41,8 +41,8 @@ namespace EscondeEsconde
             backYard = new OutsideWithDoor("Back yard", true, "a screen door");
             garden = new Outside("Garden", false);
             stairs = new Room("Stairs", "a wooden bannister");
-            hallway = new RoomWithHidingPlace("upstairs hallway", "a picture of a dog and a closet");
-            masterRoom = new RoomWithHidingPlace("Master room", "a large bed");
+            hallway = new RoomWithHidingPlace("upstairs hallway", "a picture of a dog and", "a closet");
+            masterRoom = new RoomWithHidingPlace("Master room", "", "a large bed");
 
 
             livingRoom.Exits = new Location[] { diningRoom };
