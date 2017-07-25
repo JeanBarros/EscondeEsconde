@@ -8,10 +8,18 @@ namespace EscondeEsconde
 {
     class OutsideWithHidingPlace : Outside, IHidingPlace
     {
-        public OutsideWithHidingPlace(string name, bool hot) : base(name, hot)
+        public OutsideWithHidingPlace(string name, bool hot, string hidingPlaceName) 
+            : base(name, hot)
         {
+            this.hidingPlaceName = hidingPlaceName;
         }
 
-        public string LocalDescription => throw new NotImplementedException();
+        private string hidingPlaceName;
+        public string HidingPlaceName { get { return hidingPlaceName; } }
+
+        public override string Description
+        {
+            get { return base.Description + " Someone could hide " + hidingPlaceName + "."; }
+        }
     }
 }
