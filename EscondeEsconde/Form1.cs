@@ -12,47 +12,78 @@ namespace EscondeEsconde
 {
     public partial class Form1 : Form
     {
+        int Moves;
         Location currenteLocation;
         RoomWithDoor livingRoom;
-        Room diningRoom;
+        RoomWithHidingPlace diningRoom;
         RoomWithDoor kitchen;
-        OutsideWithDoor frontYard;
-        OutsideWithDoor backYard;
-        Outside garden;
         Room stairs;
         RoomWithHidingPlace hallway;
-        RoomWithHidingPlace masterRoom;
-        RoomWithHidingPlace secondRoom;
         RoomWithHidingPlace bathroom;
-
+        RoomWithHidingPlace masterBedroom;
+        RoomWithHidingPlace secondBedroom;
+        OutsideWithDoor frontYard;
+        OutsideWithDoor backYard;
+        OutsideWithHidingPlace garden;
+        OutsideWithHidingPlace driveway;
+        
+        Oponent opponent;
+        
         public Form1()
         {
             InitializeComponent();
             CreateObjects();
-            MoveToANewLocation(livingRoom);
+            opponent = new Oponent(frontYard);
+            ResetGame(false);
+        }
+
+        private void ResetGame(bool displayMessage)
+        {
+            if (displayMessage)
+            {
+                MessageBox.Show("You found me in " + Moves + "moves!");
+                IHidingPlace foundLocation = currenteLocation as IHidingPlace;
+                description.Text = "You found your opponent in " + Moves
+                    + " moves! He was hiding " + foundLocation.HidingPlaceName + ".";
+            }
+            Moves = 0;
+            hide.Visible = true;
+            goHere.Visible = false;
+            check.Visible = false;
+            goThrougTheDoor.Visible = false;
+            exits.Visible = false;
         }
 
         private void CreateObjects()
         {
-            livingRoom = new RoomWithDoor("Living room", "an antique carpet", "an oak door with a brass knob");
-            diningRoom = new Room("Dining room", "a cristal chandelier");
-            kitchen = new RoomWithDoor("Kitchen", "stainless steel appliances", "a screen door");
-            frontYard = new OutsideWithDoor("Front yard", false, "an oak door with a brass knob");
-            backYard = new OutsideWithDoor("Back yard", true, "a screen door");
-            garden = new Outside("Garden", false);
+            livingRoom = new RoomWithDoor("Living room", "an antique carpet", 
+                "inside the cleset",  "an oak door with a brass handle");
+            diningRoom = new RoomWithHidingPlace("Dining room", "a cristal chandelier", 
+                "in the tall armoire");
+            kitchen = new RoomWithDoor("Kitchen", "stainless steel appliances", 
+                "in the cabinet", "a screen door");
             stairs = new Room("Stairs", "a wooden bannister");
-            hallway = new RoomWithHidingPlace("upstairs hallway", "a picture of a dog and", "a closet");
-            masterRoom = new RoomWithHidingPlace("Master room", "", "a large bed");
+            hallway = new RoomWithHidingPlace("upstairs hallway", "a picture of a dog", "in the closet");
+            bathroom = new RoomWithHidingPlace("Bathroom", "a sink and a toilet", "in the shower");
+            masterBedroom = new RoomWithHidingPlace("Master Bedroom", "a large bed", "under the bed");
+            secondBedroom = new RoomWithHidingPlace("Second bedrrom", "a small bed", "under the bed");
+            frontYard = new OutsideWithDoor("Front yard", false, "a heavy-looking oak door");
+            backYard = new OutsideWithDoor("Back yard", true, "a screen door");
+            garden = new OutsideWithHidingPlace("Garden", false, "inside the shed");
+            driveway = new OutsideWithHidingPlace("Driveway", true, "in the garage");
 
-
-            livingRoom.Exits = new Location[] { diningRoom };
             diningRoom.Exits = new Location[] { livingRoom, kitchen };
+            livingRoom.Exits = new Location[] { diningRoom, stairs };            
             kitchen.Exits = new Location[] { diningRoom };
-            frontYard.Exits = new Location[] { backYard, garden };
-            backYard.Exits = new Location[] { frontYard, garden };
-            garden.Exits = new Location[] { frontYard, backYard };
-            stairs.Exits = new Location[] { hallway };
-            hallway.Exits = new Location[] { stairs };
+            stairs.Exits = new Location[] { livingRoom, hallway };
+            hallway.Exits = new Location[] { stairs, bathroom, masterBedroom, secondBedroom };
+            bathroom.Exits = new Location[] { hallway };
+            masterBedroom.Exits = new Location[] { hallway };
+            secondBedroom.Exits = new Location[] { hallway };
+            frontYard.Exits = new Location[] { backYard, garden, driveway };
+            backYard.Exits = new Location[] { frontYard, garden, driveway };
+            garden.Exits = new Location[] { backYard, frontYard };
+            driveway.Exits = new Location[] { backYard, frontYard };            
 
             livingRoom.DoorLocation = frontYard;
             frontYard.DoorLocation = livingRoom;
@@ -86,6 +117,6 @@ namespace EscondeEsconde
         {
             IHasExteriorDoor hasDoor = currenteLocation as IHasExteriorDoor;
             MoveToANewLocation(hasDoor.DoorLocation);
-        }
+        }        
     }
 }
