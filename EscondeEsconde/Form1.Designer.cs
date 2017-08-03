@@ -73,6 +73,7 @@
             this.check.TabIndex = 0;
             this.check.Text = "button1";
             this.check.UseVisualStyleBackColor = true;
+            this.check.Click += new System.EventHandler(this.check_Click);
             // 
             // hide
             // 
@@ -80,8 +81,9 @@
             this.hide.Name = "hide";
             this.hide.Size = new System.Drawing.Size(75, 23);
             this.hide.TabIndex = 1;
-            this.hide.Text = "button2";
+            this.hide.Text = "Se esconda!";
             this.hide.UseVisualStyleBackColor = true;
+            this.hide.Click += new System.EventHandler(this.hide_Click);
             // 
             // exits
             // 
@@ -104,7 +106,7 @@
             this.Controls.Add(this.check);
             this.Controls.Add(this.description);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Esconde-esconde";
             this.ResumeLayout(false);
             this.PerformLayout();
 

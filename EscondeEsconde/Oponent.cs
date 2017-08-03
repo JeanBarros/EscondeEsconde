@@ -15,10 +15,6 @@ namespace EscondeEsconde
         {
             this.myLocation = startingLocation;
             randon = new Random();
-            //for (int i = 0; i < 10; i++)
-            //{
-
-            //}
         }
 
         public void Move()

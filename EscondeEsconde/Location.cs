@@ -20,13 +20,18 @@ namespace EscondeEsconde
         {
             get
             {
-                string description = "You´re standing in the " + name + ". You see exits to the following places: ";
+                string description = "";
+
+                if(name.EndsWith("a") || name.EndsWith("r"))
+                    description = "Você está na " + name + ". Você pode ir para os seguintes lugares: ";
+                else
+                    description = "Você está no " + name + ". Você pode ir para os seguintes lugares: ";
 
                 for (int i = 0; i < Exits.Length; i++)
                 {
                     description += "" + Exits[i].Name;
                     if (i != Exits.Length - 1)
-                        description += ".";
+                        description += ", ";
                 }
                 description += ".";
 

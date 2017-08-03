@@ -8,7 +8,7 @@ namespace EscondeEsconde
 {
     class OutsideWithHidingPlace : Outside, IHidingPlace
     {
-        public OutsideWithHidingPlace(string name, bool hot, string hidingPlaceName) 
+        public OutsideWithHidingPlace(string name, bool hot, string hidingPlaceName)
             : base(name, hot)
         {
             this.hidingPlaceName = hidingPlaceName;
@@ -19,7 +19,11 @@ namespace EscondeEsconde
 
         public override string Description
         {
-            get { return base.Description + " Someone could hide " + hidingPlaceName + "."; }
+            get
+
+            {
+                return base.Description + " Alguém poderia se econder " + hidingPlaceName + ".";
+            }
         }
     }
 }

@@ -16,10 +16,13 @@ namespace EscondeEsconde
 
         private string hidingPlaceName;
         public string HidingPlaceName { get { return hidingPlaceName; } }
-        
+
         public override string Description
         {
-            get { return base.Description + " Someone could hide " + hidingPlaceName + "."; }
+            get
+            {
+                return base.Description + " Alguém poderia se econder " + hidingPlaceName + ".";
+            }
         }
     }
 }

@@ -41,10 +41,10 @@ namespace EscondeEsconde
         {
             if (displayMessage)
             {
-                MessageBox.Show("You found me in " + Moves + "moves!");
+                MessageBox.Show("Você me encontrou em " + Moves + " movimentos!");
                 IHidingPlace foundLocation = currenteLocation as IHidingPlace;
-                description.Text = "You found your opponent in " + Moves
-                    + " moves! He was hiding " + foundLocation.HidingPlaceName + ".";
+                description.Text = "Você encontrou o oponente em " + Moves
+                    + " movimentos! Ele estava escondido em " + foundLocation.HidingPlaceName + ".";
             }
             Moves = 0;
             hide.Visible = true;
@@ -54,23 +54,72 @@ namespace EscondeEsconde
             exits.Visible = false;
         }
 
+        private void check_Click(object sender, EventArgs e)
+        {
+            Moves++;
+            if (opponent.Check(currenteLocation))
+                ResetGame(true);
+            else
+                RedrawForm();
+        }
+
+        private void hide_Click(object sender, EventArgs e)
+        {
+            hide.Visible = false;
+            for (int i=1;i<=10;i++)
+            {
+                opponent.Move();
+                description.Text = i + "... ";
+                Application.DoEvents();
+                System.Threading.Thread.Sleep(200);
+            }
+            description.Text = "Pronto ou não, aí vou eu!";
+            Application.DoEvents();
+            System.Threading.Thread.Sleep(500);
+            goHere.Visible = true;
+            exits.Visible = true;
+            MoveToANewLocation(livingRoom);
+        }
+
+        private void RedrawForm()
+        {
+            exits.Items.Clear();
+            for (int i = 0; i < currenteLocation.Exits.Length; i++)
+                exits.Items.Add(currenteLocation.Exits[i].Name);
+            exits.SelectedIndex = 0;
+            description.Text = currenteLocation.Description +
+                "\r\n(move #" + Moves + ")";
+            if (currenteLocation is IHidingPlace)
+            {
+                IHidingPlace hidingPlace = currenteLocation as IHidingPlace;
+                check.Text = "Check " + hidingPlace.HidingPlaceName;
+                check.Visible = true;
+            }
+            else
+                check.Visible = false;
+            if (currenteLocation is IHasExteriorDoor)
+                goThrougTheDoor.Visible = true;
+            else
+                goThrougTheDoor.Visible = false;
+        }
+
         private void CreateObjects()
         {
-            livingRoom = new RoomWithDoor("Living room", "an antique carpet", 
-                "inside the cleset",  "an oak door with a brass handle");
-            diningRoom = new RoomWithHidingPlace("Dining room", "a cristal chandelier", 
-                "in the tall armoire");
-            kitchen = new RoomWithDoor("Kitchen", "stainless steel appliances", 
-                "in the cabinet", "a screen door");
-            stairs = new Room("Stairs", "a wooden bannister");
-            hallway = new RoomWithHidingPlace("upstairs hallway", "a picture of a dog", "in the closet");
-            bathroom = new RoomWithHidingPlace("Bathroom", "a sink and a toilet", "in the shower");
-            masterBedroom = new RoomWithHidingPlace("Master Bedroom", "a large bed", "under the bed");
-            secondBedroom = new RoomWithHidingPlace("Second bedrrom", "a small bed", "under the bed");
-            frontYard = new OutsideWithDoor("Front yard", false, "a heavy-looking oak door");
-            backYard = new OutsideWithDoor("Back yard", true, "a screen door");
-            garden = new OutsideWithHidingPlace("Garden", false, "inside the shed");
-            driveway = new OutsideWithHidingPlace("Driveway", true, "in the garage");
+            livingRoom = new RoomWithDoor("sala", "um tapete antigo", 
+                "dentro do closet", "uma porta de carvalho com uma maçaneta de latão");
+            diningRoom = new RoomWithHidingPlace("sala de jantar", "um candelabro de cristal", 
+                "no armário alto");
+            kitchen = new RoomWithDoor("cozinha", "aparelhos de aço inoxidável", 
+                "no armário embaixo da pia", "uma porta com uma tela");
+            stairs = new Room("escada", "um corrimão de madeira");
+            hallway = new RoomWithHidingPlace("corredor do andar de cima", "um quadro de um cachorro", "no closet");
+            bathroom = new RoomWithHidingPlace("banheiro", "uma pia e um vaso", "no chuveiro");
+            masterBedroom = new RoomWithHidingPlace("quarto de casal", "uma cama grande", "debaixo da cama");
+            secondBedroom = new RoomWithHidingPlace("quarto de solteiro", "uma cama pequena", "debaixo da cama");
+            frontYard = new OutsideWithDoor("quintal da frente", false, "uma porta de carvalho pesado");
+            backYard = new OutsideWithDoor("quintal dos fundos", true, "uma porta com uma tela");
+            garden = new OutsideWithHidingPlace("jardim", false, "dentro do galpão");
+            driveway = new OutsideWithHidingPlace("calçada", true, "na garagem");
 
             diningRoom.Exits = new Location[] { livingRoom, kitchen };
             livingRoom.Exits = new Location[] { diningRoom, stairs };            
@@ -93,19 +142,9 @@ namespace EscondeEsconde
 
         private void MoveToANewLocation(Location newLocation)
         {
+            Moves++;
             currenteLocation = newLocation;
-            exits.Items.Clear();
-
-            for (int i = 0; i < currenteLocation.Exits.Length; i++)
-                exits.Items.Add(currenteLocation.Exits[i].Name);
-            exits.SelectedIndex = 0;
-
-            description.Text = currenteLocation.Description;
-            if (currenteLocation is IHasExteriorDoor)
-                goThrougTheDoor.Visible = true;
-            else
-                goThrougTheDoor.Visible = false;
-
+            RedrawForm();
         }
 
         private void goHere_Click(object sender, EventArgs e)

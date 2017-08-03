@@ -15,6 +15,6 @@ namespace EscondeEsconde
             this.decoration = decoration;
         }
 
-        public override string Description => base.Description + " You see " + decoration + ".";
+        public override string Description => base.Description + " Você está vendo " + decoration + ".";
     }
 }
