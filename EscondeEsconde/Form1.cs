@@ -71,11 +71,11 @@ namespace EscondeEsconde
                 opponent.Move();
                 description.Text = i + "... ";
                 Application.DoEvents();
-                System.Threading.Thread.Sleep(200);
+                System.Threading.Thread.Sleep(1300);
             }
             description.Text = "Pronto ou não, aí vou eu!";
             Application.DoEvents();
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(2000);
             goHere.Visible = true;
             exits.Visible = true;
             MoveToANewLocation(livingRoom);
